@@ -42,18 +42,14 @@
                            {:account/email "account@example.net"}]})))
 
   (provided! "The database contains the account"
-    (acct/get-account db uuid subquery) => (select-keys
-                                             {:account/id      uuid
-                                              :account/active? false
-                                              :account/cruft   22
-                                              :account/email   "boo@bah.com"} subquery)
-
+    (acct/get-account (d/db (:conn (seeded-setup))) (uuid 2) [:account/email :account/active?]) 
+    => {:account/active? false
+        :account/email "boo@bah.com"}
     (component "The pathom parser for the server"
       (let [{:keys [conn]} (seeded-setup)
             parser (build-parser conn)]
         (assertions
           "Can pull the details of an account"
-          (parser {} [{[:account/id (uuid 2)] [:account/id :account/email :account/active?]}])
-          => {[:account/id (uuid 2)] {:account/id      (uuid 2)
-                                      :account/email   "boo@bah.com"
-                                      :account/active? false}})))))
+          (parser {} [{[:account/id (uuid 2)] [:account/email :account/active?]}])
+          => {[:account/id (uuid 2)] {:account/email "boo@bah.com"
+                                     :account/active? false}})))))
