@@ -63,3 +63,13 @@ resources/public/workspaces/*
 .calva/
 .lsp/.cache/
 .clj-kondo/.cache/
+
+# Direnv
+/.direnv
+
+# Generated directories (std)
+/.cache/
+/.data/
+/.config/
+/.bin/
+/.run/
