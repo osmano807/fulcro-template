@@ -3,6 +3,7 @@
     [com.fulcrologic.fulcro.networking.http-remote :as net]
     [com.fulcrologic.fulcro.application :as app]
     [com.fulcrologic.fulcro.components :as comp]
+    [com.fulcrologic.fulcro.react.version18 :refer [with-react18]]
     [edn-query-language.core :as eql]))
 
 (def secured-request-middleware
@@ -19,13 +20,15 @@
     (-> ast :type #{:root})
     (update :children conj (eql/expr->ast :com.wsscode.pathom.core/errors))))
 
-(defonce SPA (app/fulcro-app
+(defonce SPA (->
+  (app/fulcro-app
                {;; This ensures your client can talk to a CSRF-protected server.
                 ;; See middleware.clj to see how the token is embedded into the HTML
                 :remotes {:remote (net/fulcro-http-remote
                                     {:url                "/api"
                                      :request-middleware secured-request-middleware})}
-                :global-eql-transform global-eql-transform}))
+                :global-eql-transform global-eql-transform})
+  (with-react18)))
 
 (comment
   (-> SPA (::app/runtime-atom) deref ::app/indexes))
