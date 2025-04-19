@@ -7,7 +7,8 @@
                      :modules    {:main {:init-fn app.client/init}}
                      ;; guardrails checks only during dev
                      :dev        {:compiler-options
-                                  {:external-config {:guardrails {}}}}
+                                  {:external-config {:guardrails {}}}
+                                 :deps {:aliases [:dev]}}
 
                      :devtools   {:after-load app.client/refresh
                                   :preloads   [com.fulcrologic.devtools.chrome-preload app.development-preload]}}

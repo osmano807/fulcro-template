@@ -1,5 +1,6 @@
 (ns build
-  (:require [clojure.tools.build.api :as b]))
+  (:require [clojure.tools.build.api :as b]
+            [shadow.cljs.devtools.api :as shadow]))
 
 (def build-folder "target")
 (def jar-content (str build-folder "/classes"))
@@ -11,10 +12,13 @@
 
 (defn clean [_]
       (b/delete {:path "target"})
+      #_(b/delete {:path "resources/public/js/main"})
       (println (format "Build folder \"%s\" removed" build-folder)))
 
 (defn uber [_]
       (clean nil)
+  
+      #_(shadow/release :main)
 
       (b/copy-dir {:src-dirs   ["src/main" "resources"]         ; copy resources
                    :target-dir jar-content})
