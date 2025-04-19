@@ -7,9 +7,14 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
+== Attribution
+
+This project is based on the https://github.com/fulcrologic/fulcro-template[Fulcro Template] by Fulcrologic, LLC.
+It has been modified to include a Nix-based development environment and other improvements.
+
 == Status
 
-This is an official template for a Fulcro starter project that might go on to become a production application. It includes a number of features that a beginner *will not* need for just playing with the library (full CI test setup, workspaces), but is simple enough that a beginner should have no real problem using it.
+This is an template for a Fulcro starter project that might go on to become a production application. It includes a number of features that a beginner *will not* need for just playing with the library (full CI test setup, workspaces), but is simple enough that a beginner should have no real problem using it.
 
 Beginners should therefore either use this template, or just generate simple play projects from the instructions in the https://book.fulcrologic.com[Developer's Guide].
 
@@ -58,10 +63,41 @@ user=> (require 'development)
 user=> (in-ns 'development)
 development=> (start)
 # after modifications of the backend code run: `(restart)`
-# 4. Visit the application at http://localhost:3000
+# 4. Visit the application at http://localhost:8000
 
 # (Optional): Run tests via `npm run client/test` and visit http://localhost:8022
 ```
+
+=== Nix Development Environment
+
+This project includes a Nix development environment that provides all necessary tools and commands for development. To use it:
+
+```Shell
+# Enter the development shell
+nix develop
+
+# Available commands:
+setup           # Install all dependencies (JavaScript and Clojure)
+dev-frontend    # Start the shadow-cljs development server
+dev-backend     # Start the Clojure backend server
+test-all        # Run all tests (ClojureScript and Clojure)
+test-cljs       # Run only the ClojureScript tests
+test-clj        # Run only the Clojure tests
+build           # Build the production uberjar
+clean           # Clean build artifacts
+```
+
+The development shell provides all necessary tools including:
+- Clojure and ClojureScript tooling
+- Node.js and npm
+- JDK
+- Development tools (clj-kondo, clojure-lsp, etc.)
+
+For automatic environment loading, you can use direnv:
+1. Install direnv: `nix profile install nixpkgs#direnv` or trough your preferred method on NixOS
+2. Copy `.envrc.example` to `.envrc`: `cp .envrc.example .envrc`
+3. Allow the .envrc: `direnv allow`
+4. The environment will now load automatically when you enter the project directory
 
 === The shadow-cljs compile server
 
@@ -183,7 +219,7 @@ NOTE: For real development, please use an editor that has REPL integration, like
 Spacemacs.
 
 The URL to work on your application is then
-http://localhost:3000.
+http://localhost:8000.
 
 Hot code reload, preloads, and such are all coded into the javascript.
 
