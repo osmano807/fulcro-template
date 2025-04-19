@@ -30,6 +30,5 @@
 
 (comment
   (require 'development)
-  (in-ns 'development)
-  (restart)
+  (development/restart)
   )

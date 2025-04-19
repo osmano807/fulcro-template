@@ -43,7 +43,7 @@
    :ident             (fn [] session/signup-ident)
    :route-segment     ["signup"]
    :componentDidMount (fn [this]
-                        (comp/transact! this [(session/clear-signup-form)]))}
+                        (comp/transact! this [(session/clear-signup-form {})]))}
   (let [submit!  (fn [evt]
                    (when (or (identical? true evt) (evt/enter-key? evt))
                      (comp/transact! this [(session/signup! {:email email :password password})])

@@ -1,7 +1,7 @@
 (ns app.sample-test
   (:require
     [clojure.test :refer [deftest]]
-    [fulcro-spec.core :refer [specification provided behavior assertions]]))
+    [fulcro-spec.core :refer [specification provided behavior assertions =>]]))
 
 ; Tests for both client and server
 (deftest sample-test

@@ -4,7 +4,6 @@
     [fulcro.inspect.tool :as it]
     [app.ui.root :as root]
     [com.fulcrologic.fulcro.application :as app]
-    [app.ui.root :as root]
     [com.fulcrologic.fulcro.networking.http-remote :as net]
     [com.fulcrologic.fulcro.data-fetch :as df]
     [com.fulcrologic.fulcro.ui-state-machines :as uism]
