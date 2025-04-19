@@ -45,11 +45,11 @@ It comes with helper `npm run` scripts pre-loaded, you can find them in the pack
 Typically you want to start the server and the _main_ client builds. See below. You can simply start everything from the command line
 
 ```Shell
-git clone --depth 1 -o fulcro-template https://github.com/fulcrologic/fulcro-template.git fulcro-app
+git clone --depth 1 https://github.com/osmano807/fulcro-template.git fulcro-app
 cd fulcro-app
 
 # The shadow-cljs compiler is a dependency.
-yarn install
+npm install
 
 # 1. Start shadow-cljs frontend compilation server:
 npx shadow-cljs server
@@ -94,7 +94,7 @@ The development shell provides all necessary tools including:
 - Development tools (clj-kondo, clojure-lsp, etc.)
 
 For automatic environment loading, you can use direnv:
-1. Install direnv: `nix profile install nixpkgs#direnv` or trough your preferred method on NixOS
+1. Install direnv: `nix profile install nixpkgs#direnv` or through your preferred method on NixOS
 2. Copy `.envrc.example` to `.envrc`: `cp .envrc.example .envrc`
 3. Allow the .envrc: `direnv allow`
 4. The environment will now load automatically when you enter the project directory
@@ -127,8 +127,13 @@ it to your `package.json`.
 You also cannot compile this project until you install the ones it
 depends on already:
 
-```
-$ yarn install
+```Shell
+# Using the Nix development environment
+nix develop
+setup
+
+# Or manually
+npm install
 ```
 
 Adding NPM Javascript libraries is as simple as adding them to your
@@ -144,18 +149,13 @@ the client for hot code reload.
 
 In general it is easiest just to run the compiler in server mode:
 
-```
-$ npx shadow-cljs server
-INFO: XNIO version 3.3.8.Final
-Nov 10, 2018 8:08:23 PM org.xnio.nio.NioXnio <clinit>
-INFO: XNIO NIO Implementation Version 3.3.8.Final
-shadow-cljs - HTTP server for :test available at http://localhost:8022
-shadow-cljs - HTTP server for :workspaces available at http://localhost:8023
-shadow-cljs - server version: 2.7.2
-shadow-cljs - server running at http://localhost:9630
-shadow-cljs - socket REPL running on port 51936
-shadow-cljs - nREPL server started on port 9000
-...
+```Shell
+# Using the Nix development environment
+nix develop
+dev-frontend
+
+# Or manually
+npx shadow-cljs server
 ```
 
 then *navigate to the server URL* (shown in this example as http://localhost:9630) and
@@ -198,8 +198,13 @@ start your own server that can also serve your application's API.
 Start a https://cursive-ide.com/userguide/repl.html#local-repls[LOCAL clj nREPL in IntelliJ] (using IntelliJ's classpath with
 the `dev` https://cursive-ide.com/userguide/deps.html#working-with-aliases[alias selected in the Clojure Deps tab]), or from the command line:
 
-```bash
-$ clj -A:dev -J-Dtrace -J-Dguardrails.enabled=true
+```Shell
+# Using the Nix development environment
+nix develop
+dev-backend
+
+# Or manually
+clj -A:dev -J-Dtrace -J-Dguardrails.enabled=true
 user=> (require 'development)
 development=> (in-ns 'development)
 development=> (start)
@@ -251,15 +256,19 @@ You can write plain `deftest` in here, and it is preconfigured to support the he
 
 === Running tests:
 
-
 ==== Clojure Tests
 
 Typically you'll just run your tests using the editor of choice (e.g. Run tests in namspace in IntelliJ).
 
 The tests are also set up to run with Kaocha at the command line for your convenience and CI tools:
 
-```
-$ clj -A:dev:clj-tests --watch
+```Shell
+# Using the Nix development environment
+nix develop
+test-clj
+
+# Or manually
+clj -A:dev:clj-tests --watch
 ```
 
 See the https://github.com/lambdaisland/kaocha[Kaocha project] for more details.
@@ -273,23 +282,24 @@ CI support is done through the `ci-test` build in shadow, and via Karma.
 If you start the `ci-tests` build in Shadow-cljs, then you can also run cljs tests in a terminal "watch mode"
 with:
 
-```
-npx karma start
-```
+```Shell
+# Using the Nix development environment
+nix develop
+test-cljs
 
-Of course, this make CLJS CI easy:
-
-```
+# Or manually
 npx shadow-cljs compile ci-tests
 npx karma start --single-run
 ```
 
-==== Running all Tests Once
+== Running all Tests Once
 
-There is a UNIX Makefile that includes all of the CI commands as the default target. Just run:
+You can run all tests (both Clojure and ClojureScript) at once using the Nix development environment:
 
-```
-make
+```Shell
+# Using the Nix development environment
+nix develop
+test-all
 ```
 
 == Standalone Runnable Jar (For production)
@@ -317,20 +327,23 @@ To run a build command, we can just write
 
 [source]
 ----
-clj -T:build <function>
-----
+# Using the Nix development environment
+nix develop
+build
 
-e.g.
-
-[source]
-----
-clj -T:build clean
+# Or manually
+clj -T:build uber
 ----
 or
 
 [source]
 ----
-clj -T:build uber
+# Using the Nix development environment
+nix develop
+clean
+
+# Or manually
+clj -T:build clean
 ----
 
 All this is doing is running our `defn` functions in the build file!
